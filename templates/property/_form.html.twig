@@ -1,4 +1,230 @@
+
+
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div class="form pr-5 pl-5 ">
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(form) }}
+    </div>
+
+    <div class="col-8">
+    
+    <div class="m-4">
+        <div class="row mt-2">
+            <strong>
+                {{ form_label(form.title, "Titre") }}
+            </strong>
+        </div>
+
+        <div class="row">
+            {{ form_widget(form.title) }}
+        </div>
+    </div>
+
+
+    <div class="m-4">
+        <div class="row mt-2">
+            <strong>
+            {{ form_label(form.surface, "Surface") }}
+            </strong>
+        </div>
+
+        <div class="row">
+            {{ form_widget(form.surface) }}
+        </div>
+    </div>
+
+
+
+    <div class="m-4">
+
+		<div class="row mt-2">
+            <strong>
+            {{ form_label(form.content, "Description") }}
+            </strong>
+        </div>
+
+		<div class="row">
+            {{ form_widget(form.content) }}
+        </div>
+    </div>
+
+
+
+    <div class="m-4">
+		<div class="row mt-2">
+            <strong>
+            {{ form_label(form.price,"Prix") }}
+            </strong>
+        </div>
+
+		<div class="row">
+            {{ form_widget(form.price) }}
+        </div>
+    </div>
+
+
+
+       
+    <div class="m-4">
+		<div class="row mt-2">
+            <strong>
+            {{ form_label(form.floor, "Nombre d'étages") }}
+            </strong>
+        </div>
+
+		<div class="row">
+            {{ form_widget(form.floor) }}
+        </div>
+    </div>
+
+
+
+    <div class="m-4">
+		<div class="row mt-2">
+            <strong>
+            {{ form_label(form.rooms, "Nombre de pièces") }}
+            </strong>
+        </div>
+
+        <div class="row">
+            {{ form_widget(form.rooms) }}
+        </div>
+    </div>
+        
+    <div class="m-4">
+		<div class="row mt-2">
+            <strong>
+            {{ form_label(form.address, "Adresse") }}
+            </strong>
+        </div>
+                
+        <div class="row">
+            {{ form_widget(form.address) }}
+        </div>
+    </div>
+
+
+
+    <div class="m-4">
+		<div class="row mt-2">
+            <strong>
+            {{ form_label(form.zipcode, "Code postal") }}
+            </strong>
+        </div>
+
+        <div class="row">
+            {{ form_widget(form.zipcode) }}
+        </div>
+    </div>
+
+    <div class="m-4">
+        <div class="row mt-2">
+            <strong>
+            {{ form_label(form.city, "Ville") }}
+            </strong>
+        </div>
+
+        <div class="row">
+            {{ form_widget(form.city) }}
+        </div>
+    </div>
+
+    <div class="m-4">
+        <div class="row mt-2">
+            <strong>
+            {{ form_label(form.type, "Type de bien") }}
+            </strong>
+        </div>
+
+        <div class="row">
+            {{ form_widget(form.type) }}
+        </div>
+    </div>
+
+
+    <div class="m-4">
+        <div class="row mt-2">
+            <strong>
+            {{ form_label(form.transactionType, "Type de transaction") }}
+            </strong>
+        </div>
+
+        <div class="row">
+            {{ form_widget(form.transactionType) }}
+        </div>
+    </div>
+
+
+
+
+    <div class="m-4">
+        <div class="row mt-2">
+            <strong>
+            {{ form_label(form.groundSize, "Surface du terrain") }}
+            </strong>
+        </div>
+
+        <div class="row">
+            {{ form_widget(form.groundSize) }}
+        </div>
+    </div>
+
+    <div class="m-4">
+        <div class="row mt-2">
+            <strong>
+            {{ form_label(form.dateOfConstruction, "Année de construction") }}
+            </strong>
+        </div>
+        <div class="row">
+            {{ form_widget(form.dateOfConstruction) }}
+        </div>
+    </div>
+
+    <div class="m-4">
+        <div class="row mt-2">
+            <strong>
+            {{ form_label(form.sell, "Statut de la transaction") }}
+            </strong>
+        </div>
+
+        <div class="row">
+            {{ form_widget(form.sell) }}
+        </div>
+    </div>
+
+    <div class="m-4">
+        <div class="row mt-2">
+            <strong>
+            {{ form_label(form.slug, "Slug") }}
+            </strong>
+        </div>
+        <div class="row">
+            {{ form_widget(form.slug) }}
+        </div>  
+    </div>     
+                    
+                    
+    <div class="m-4">
+        <div class="row mt-2">
+            <strong>
+            {{ form_label(form.employee, "Agent référent") }}
+            </strong>
+        </div>
+                <div class="row">
+            {{ form_widget(form.employee) }}
+        </div>
+        </div>
+    </div>
+
+
+
+
+
+    </div>
+
+
+
+
+
+	</div>
 {{ form_end(form) }}

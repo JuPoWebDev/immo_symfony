@@ -47,4 +47,27 @@ class PropertyRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findBySearch(int $roomsMin, int $roomsMax, int $surfaceMin, int $surfaceMax, int $priceMin, int $priceMax )
+    {
+        $queryBuilder = $this->createQueryBuilder('property')
+        ->where('property.rooms >= :roomsMin')
+        ->andWhere('property.rooms <= :roomsMax')
+        ->andWhere('property.surface >= :surfaceMin')
+        ->andWhere('property.surface <= :surfaceMax')
+        ->andWhere('property.price >= :priceMin')
+        ->andWhere('property.price <= :priceMax')
+        ->setParameters(new ArrayCollection([
+            new Parameter('roomsMin', $roomsMin),
+            new Parameter('roomsMax', $roomsMax),
+            new Parameter('surfaceMin', $surfaceMin),
+            new Parameter('surfaceMax', $surfaceMax),
+            new Parameter('priceMin', $priceMin),
+            new Parameter('priceMax', $priceMax)
+        ]))
+        ;
+    }
+
+
+
 }

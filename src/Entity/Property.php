@@ -6,6 +6,8 @@ use App\Repository\PropertyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=PropertyRepository::class)
@@ -30,47 +32,58 @@ class Property
     private $surface;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
      */
     private $content;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive
      */
     private $price;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\PositiveOrZero
      */
     private $floor;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive
      */
     private $rooms;
 
     /**
      * @ORM\Column(type="string", length=120)
+     * @Assert\NotBlank
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     * max=10)
      */
     private $zipcode;
 
     /**
      * @ORM\Column(type="string", length=120)
+     * @Assert\NotBlank
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\NotNull
+     * @Assert\Type("boolean")
      */
     private $transactionType;
 
@@ -86,11 +99,13 @@ class Property
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\Type("boolean")
      */
-    private $sell;
+    private $sell = false;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank
      */
     private $slug;
 

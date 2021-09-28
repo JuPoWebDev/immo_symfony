@@ -43,7 +43,7 @@ class AppFixtures extends Fixture
             $property = new Property;
              $property->setTitle("Titre" .$i);
             $property->setSurface($faker->randomNumber($nbDigits = 4, $strict = false));
-            $property->setContent("Lorem ipsum dolor, sit amet consectetur adipisicing elit.");
+            $property->setContent("Lorem ipsum dolor, sit amet consectetur adipisicing elit.Lorem ipsum dolor, sit amet consectetur adipisicing elit.Lorem ipsum dolor, sit amet consectetur adipisicing elit.Lorem ipsum dolor, sit amet consectetur adipisicing elit.Lorem ipsum dolor, sit amet consectetur adipisicing elit.");
             $property->setFloor($faker->numberBetween($min = 1, $max = 150));
             $property->setRooms($faker->numberBetween($min = 1, $max = 30));
             $property->setAddress($faker->streetAddress);

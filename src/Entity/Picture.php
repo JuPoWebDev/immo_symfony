@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\PictureRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=PictureRepository::class)
@@ -19,6 +21,8 @@ class Picture
 
     /**
      * @ORM\Column(type="string", length=120)
+     * @Assert\File(
+     * mimeTypes={"images/png","image/jpg"})
      */
     private $name;
 
@@ -33,7 +37,7 @@ class Picture
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName()
     {
         return $this->name;
     }

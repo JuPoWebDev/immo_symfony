@@ -4,22 +4,42 @@ namespace App\Controller;
 
 use App\Entity\Property;
 use App\Form\PropertyType;
+use App\Form\SearchPropertyType;
 use App\Repository\PropertyRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/property')]
+
 class PropertyController extends AbstractController
 {
     #[Route('/', name: 'property_index', methods: ['GET'])]
     public function index(PropertyRepository $propertyRepository): Response
     {
+    
         return $this->render('property/index.html.twig', [
-            'properties' => $propertyRepository->findAll(),
+            'properties' => $propertyRepository->findBy([],["id" => "DESC"], 5)
         ]);
     }
+
+    #[Route('/type/{propertyType}', name: 'property_type', methods: ['GET', 'POST'])]
+    public function type(PropertyRepository $propertyRepository, $propertyType): Response
+    {
+        
+        return $this->render('property/index.html.twig', [
+            'properties' => $propertyRepository->findBy(["type" => $propertyType],["id" => "DESC"])
+        ]);
+    }
+    
+    #[Route('/transaction/{transactionType}', name: 'property_transactionType', methods: ['GET', 'POST'])]
+    public function transaction(PropertyRepository $propertyRepository, $transactionType): Response
+            {
+            
+                return $this->render('property/index.html.twig', [
+                    'properties' => $propertyRepository->findBy(["transactionType" => $transactionType],["id" => "DESC"])
+                ]);
+            }
 
     #[Route('/new', name: 'property_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
@@ -42,7 +62,29 @@ class PropertyController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'property_show', methods: ['GET'])]
+    #[Route('/biens', name: 'property_all', methods: ['GET', 'POST'])]
+    public function all(PropertyRepository $propertyRepository, Request $request): Response
+    {
+        $form = $this->createForm(SearchPropertyType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $search = $form->getData();
+            $title = "Voici les résultats de votre recherche"; 
+            $properties = $propertyRepository->findBySearch($search->roomsMin, $search->roomsMax, $search->surfaceMin, $search->surfaceMax, $search->priceMin, $search->priceMax);
+
+        } else {
+            $title = "Vous pouvez faire une recherche en utilisant le formulaire. Autrement, voici l'ensemble de nos biens disponibles"; 
+            $properties = $propertyRepository->findAll();
+        }
+
+        return $this->renderForm('property/all.html.twig', [
+            'form' => $form,
+            'properties' => $properties
+        ]);
+    }
+
+    #[Route('bien/{slug}', name: 'property_show', methods: ['GET'])]
     public function show(Property $property): Response
     {
         return $this->render('property/show.html.twig', [
@@ -79,4 +121,6 @@ class PropertyController extends AbstractController
 
         return $this->redirectToRoute('property_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }

@@ -26,6 +26,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Email
      */
     private $email;
 
@@ -37,31 +38,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotComprimisedPassword
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank
      */
     private $phone;
 
     /**
      * @ORM\OneToMany(targetEntity=Property::class, mappedBy="employee")
+     * @Assert\NotBlank
      */
     private $properties;
 
     /**
      * @ORM\Column(type="boolean")
+     * 
      */
     private $isVerified = false;
 
