@@ -6,68 +6,124 @@
 {% block body %}
 
 
-{{ form_start(form) }}
-<div class="form p-5">
-    <div class="my-custom-class-for-errors">
-        {{ form_errors(form) }}
-    </div>
+	{{ form_start(form) }}
+	<div class="form p-5">
+		<div class="my-custom-class-for-errors">
+			{{ form_errors(form) }}
+		</div>
 
-    <div class="row">
-        <div class="col">
-            {{ form_label(form.roomsMin, "Nombre de pièces minimum") }}
-        </div>
-        <div class="col">
-            {{ form_label(form.roomsMax, "Nombre de pièces maximum") }}
-        </div>
-		        <div class="col">
-            {{ form_label(form.surfaceMin, "Surface minimale") }}
-        </div>
-		        <div class="col">
-            {{ form_label(form.surfaceMax,"Surface maximale") }}
-        </div>
-		        <div class="col">
-            {{ form_label(form.priceMin, "Prix minimum") }}
-        </div>
-		        <div class="col">
-            {{ form_label(form.priceMax, "Prix maximum") }}
-        </div>
-    </div>
-	<hr>
-	    <div class="row">
-        <div class="col">
-            {{ form_widget(form.roomsMin) }}
-        </div>
-        <div class="col">
-            {{ form_widget(form.roomsMax) }}
-        </div>
-		        <div class="col">
-            {{ form_widget(form.surfaceMin) }}
-        </div>
-		        <div class="col">
-            {{ form_widget(form.surfaceMax) }}
-        </div>
-		        <div class="col">
-            {{ form_widget(form.priceMin) }}
-        </div>
-		        <div class="col">
-            {{ form_widget(form.priceMax) }}
-        </div>
-    </div>
+		<div class="row">
+			<div class="col">
+				{{ form_label(form.roomsMin, "Nombre de pièces minimum") }}
+			</div>
+			<div class="col">
+				{{ form_label(form.roomsMax, "Nombre de pièces maximum") }}
+			</div>
+			<div class="col">
+				{{ form_label(form.surfaceMin, "Surface minimale") }}
+			</div>
+			<div class="col">
+				{{ form_label(form.surfaceMax,"Surface maximale") }}
+			</div>
+			<div class="col">
+				{{ form_label(form.priceMin, "Prix minimum") }}
+			</div>
+			<div class="col">
+				{{ form_label(form.priceMax, "Prix maximum") }}
+			</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col">
+				{{ form_widget(form.roomsMin) }}
+			</div>
+			<div class="col">
+				{{ form_widget(form.roomsMax) }}
+			</div>
+			<div class="col">
+				{{ form_widget(form.surfaceMin) }}
+			</div>
+			<div class="col">
+				{{ form_widget(form.surfaceMax) }}
+			</div>
+			<div class="col">
+				{{ form_widget(form.priceMin) }}
+			</div>
+			<div class="col">
+				{{ form_widget(form.priceMax) }}
+			</div>
+		</div>
+		<button class="btn">{{ button_label|default('Save') }}</button>
+
 	</div>
-{{ form_end(form) }}
+	{{ form_end(form) }}
 
 
 	<div class="d-flex flex-row wrap">
 		{% block main %}
 			<div class="container d-flex flex-wrap flex-column " style="width: 80%">
 				<h1>Nos biens</h1>
-				<a href="{{ path('property_new') }}">Create new</a>
+				<div id="filters">
+					<form action={{path("property_all")}} method="GET">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>
+										<label for="roomsMin">Pièces Min</label>
+									</th>
+									<th>
+										<label for="roomsMax">Pièces Max</label>
+									</th>
+									<th>
+										<label for="surfaceMin">Surface Min</label>
+									</th>
+									<th>
+										<label for="surfaceMax">Surface Max</label>
+									</th>
+									<th>
+										<label for="priceMin">Prix Min</label>
+									</th>
+									<th>
+										<label for="priceMax">Prix Max</label>
+									</th>
+								</tr>
+							</thead>
+							<tdoby>
+								<tr>
+									<td><input type="number" name="roomsMin" id="roomsMin" value={{filters.roomsMin|default('')}}></td>
+									<td><input type="number" name="roomsMax" id="roomsMax" value={{filters.roomsMax|default('')}}></td>
+									<td><input type="number" name="surfaceMin" id="surfaceMin" value={{filters.surfaceMin|default('')}}></td>
+									<td><input type="number" name="surfaceMax" id="surfaceMax" value={{filters.surfaceMax|default('')}}></td>
+									<td><input type="number" name="priceMin" id="priceMin" value={{filters.priceMin|default('')}}></td>
+									<td><input type="number" name="priceMax" id="priceMax" value={{filters.priceMax|default('')}}></td>
+								</tr>
+								<tr>
+									<td colspan='6' class="text-center">
+										<button class="btn btn-primary">Rechercher des biens</button>
+									</td>
+								</tr>
+							</tdoby>
 
+						</table>
+					</form>
+				</div>
+				<a href="{{ path('property_new') }}">Create new</a>
+				<p>Nombre de bien disponible :
+					{{pagination.getTotalItemCount}}</p>
+				<div class="text-center">
+					<table>
+						<tr>
+							<td>{{ knp_pagination_sortable(pagination, 'Pièces', 'rooms') }}</td>
+							<td>{{ knp_pagination_sortable(pagination, 'Surface', 'surface') }}</td>
+							<td>{{ knp_pagination_sortable(pagination, 'Prix', 'price') }}</td>
+						</tr>
+					</table>
+				</div>
 				<div class="row ">
 
-					{% for property in properties %}
-						<div class="card col-4 m-5" style="width: 15rem;">
-							<img src="..." class="card-img-top" alt="...">
+					{% for property in pagination %}
+						<div class="card col-4 m-5 rounded-lg" style="width: 15rem;">
+							<img src={{property.pictures.0.name}} class="card-img-top mt-2 rounded-lg" alt="...">
 							<div class="card-body">
 								<h5 class="card-title">{{ property.title }}</h5>
 								<p class="card-text">
@@ -98,21 +154,21 @@
 
 
 					{# <td>{{ property.id }}</td>
-																																																																																																																																																																																																																																																			<td>{{ property.title }}</td>
-																																																																																																																																																																																																																																																			<td>{{ property.surface }}</td>
-																																																																																																																																																																																																																																																			<td>{{ property.content }}</td>
-																																																																																																																																																																																																																																																			<td>{{ property.price }}</td>
-																																																																																																																																																																																																																																																			<td>{{ property.floor }}</td>
-																																																																																																																																																																																																																																																			<td>{{ property.rooms }}</td>
-																																																																																																																																																																																																																																																			<td>{{ property.address }}</td>
-																																																																																																																																																																																																																																																			<td>{{ property.zipcode }}</td>
-																																																																																																																																																																																																																																																			<td>{{ property.city }}</td>
-																																																																																																																																																																																																																																																			<td>{{ property.type }}</td>
-																																																																																																																																																																																																																																																			<td>{{ property.transactionType }}</td>
-																																																																																																																																																																																																																																																			<td>{{ property.groundSize }}</td>
-																																																																																																																																																																																																																																																			<td>{{ property.dateOfConstruction }}</td>
-																																																																																																																																																																																																																																																			<td>{{ property.sell ? 'Yes' : 'No' }}</td>
-																																																																																																																																																																																																																																																			<td>{{ property.slug }}</td> #}
+																																																																																																																																																																																																																																																																																																																																			<td>{{ property.title }}</td>
+																																																																																																																																																																																																																																																																																																																																			<td>{{ property.surface }}</td>
+																																																																																																																																																																																																																																																																																																																																			<td>{{ property.content }}</td>
+																																																																																																																																																																																																																																																																																																																																			<td>{{ property.price }}</td>
+																																																																																																																																																																																																																																																																																																																																			<td>{{ property.floor }}</td>
+																																																																																																																																																																																																																																																																																																																																			<td>{{ property.rooms }}</td>
+																																																																																																																																																																																																																																																																																																																																			<td>{{ property.address }}</td>
+																																																																																																																																																																																																																																																																																																																																			<td>{{ property.zipcode }}</td>
+																																																																																																																																																																																																																																																																																																																																			<td>{{ property.city }}</td>
+																																																																																																																																																																																																																																																																																																																																			<td>{{ property.type }}</td>
+																																																																																																																																																																																																																																																																																																																																			<td>{{ property.transactionType }}</td>
+																																																																																																																																																																																																																																																																																																																																			<td>{{ property.groundSize }}</td>
+																																																																																																																																																																																																																																																																																																																																			<td>{{ property.dateOfConstruction }}</td>
+																																																																																																																																																																																																																																																																																																																																			<td>{{ property.sell ? 'Yes' : 'No' }}</td>
+																																																																																																																																																																																																																																																																																																																																			<td>{{ property.slug }}</td> #}
 
 				{% else %}
 					<tr>
@@ -120,9 +176,10 @@
 					</tr>
 				{% endfor %}
 			</div>
+			<div class="navigation">
+				{{ knp_pagination_render(pagination) }}
+			</div>
 		</div>
 	{% endblock %}
-	{% block sidebar %}
-
-	{% endblock %}
+	{% block sidebar %}{% endblock %}
 </div>{% endblock %}

@@ -1,0 +1,61 @@
+--------------------------- ENVOI DE MAIL FORMULAIRE CONTACT ----------------
+public function show(Property $property, Request $request, Swift_Mailer $mailer): Response
+    {
+        $appointment = new Appointment;
+        $form = $this->createForm(AppointmentType::class, $appointment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+
+                $appointment->setProperty($property)
+                    ->setEmployee($property->getEmployee());
+
+                $manager = $this->getDoctrine()->getManager();
+                $manager->persist($appointment);
+                $manager->flush();
+
+                try {
+                    $email = (new Swift_Message("Confirmation de rendez-vous pour la visite du bien " . $property->getTitle()))
+                        ->setFrom("no-reply@agency.fr")
+                        ->setTo($appointment->getEmail())
+                        ->setCc($property->getEmployee()->getEmail())
+                        ->setBody(
+                            $this->renderView(
+                                "email/appointment/confirmation.html.twig",
+                                [
+                                    "appointment" => $appointment
+                                ]
+                            )
+                        );
+                    $mailer->send($email);
+                    $this->addFlash(
+                        "success",
+                        "Le rendez-vous est enregistré, vous allez recevoir un mail de confirmation sur l'adresse mail: " . $appointment->getEmail()
+                    );
+                } catch (\Exception $e) {
+                    $this->addFlash(
+                        "warning",
+                        "Le rendez-vous est enregistré mais nous avons eu un problème lors de l'envoie du mail de confirmation, notre agent va vous rappeler."
+                    );
+                }
+            } catch (\Throwable $th) {
+                $this->addFlash(
+                    "danger",
+                    "Une erreur s'est produite, merci de réessayer."
+                );
+            }
+
+            return $this->redirectToRoute("property_show", [
+                "slug" => $property->getSlug()
+            ]);
+        }
+
+        return $this->render("property/show.html.twig", [
+            "property" => $property,
+            "form" => $form->createView()
+        ]);
+    }
+
+
+    --------------------------------------------------------

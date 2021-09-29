@@ -22,7 +22,7 @@ class Picture
     /**
      * @ORM\Column(type="string", length=120)
      * @Assert\File(
-     * mimeTypes={"images/png","image/jpg"})
+     * mimeTypes={"image/png","image/jpg"})
      */
     private $name;
 

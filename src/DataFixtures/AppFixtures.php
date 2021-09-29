@@ -73,7 +73,6 @@ class AppFixtures extends Fixture
                 $picture = new Picture; 
                 $picture->setName($faker->imageUrl(1080, 720, 'cats'));
                 $picture->setProperty($property);
-
                 $manager->persist($picture);
 
             }
